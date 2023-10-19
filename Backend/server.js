@@ -4,6 +4,8 @@ require('dotenv').config() //created an environmental variable called PORT and a
 
 const express = require('express') // importing express framework by asking for express module
 
+const mongoose = require('mongoose') // importing mongoose which is a js library to interact with mongodb
+
 const workoutRoutes = require('./routes/workouts')
 
 //Creating an express instance and assiging it to app variable, that makes it an express app
@@ -23,10 +25,19 @@ app.use((req, res, next) =>{
     res.json({msg: "Welcome to the app"}) // request(information about the incoming data) and response(sending a response back to client) here
 })*/
 
+// ROUTES
 app.use('/api/workouts', workoutRoutes) // by using this, all our requests will be handled by this express router
 
-// Listen for HTTP requests 
+// Connect to db
+mongoose.connect(process.env.Mongo_URI)
+ .then(() => {
+    // Listen for HTTP requests 
 app.listen(process.env.PORT, () =>{ // an arrow function that defines a callback to execute when the server starts
-    console.log('Listening for port', process.env.PORT) // displaying this message to let us know that it is listening for incoming requests
+    console.log('Connected to the db & Listening for port', process.env.PORT) // displaying this message to let us know that it is listening for incoming requests
 }) 
+ }) //using then method to fire a function when it is done connecting
+ .catch((error) => {  //using catch method to fire a function when an error is encountered
+    console.log(error) //error can be encountered in case URI, username, or pass is incorrect
+ })
+
 
