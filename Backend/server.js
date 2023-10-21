@@ -3,6 +3,7 @@ require('dotenv').config() //created an environmental variable called PORT and a
 // Creating a web server using Express Framework
 
 const express = require('express') // importing express framework by asking for express module
+const cors = require('cors');
 
 const mongoose = require('mongoose') // importing mongoose which is a js library to interact with mongodb
 
@@ -11,7 +12,10 @@ const workoutRoutes = require('./routes/workouts')
 //Creating an express instance and assiging it to app variable, that makes it an express app
 const app = express() // we will use this app object to configure and define the routes and behavior of the web server
 
-
+app.use(cors({
+    origin: 'http://localhost:3000', // Adjust this URL to your frontend's address
+    methods: 'GET,POST', // Adjust allowed HTTP methods
+  }));
 // setting up a middleware
 app.use(express.json())
 
